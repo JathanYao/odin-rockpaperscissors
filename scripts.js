@@ -1,3 +1,7 @@
+const displayComputerScore = document.querySelector("#cScore")
+const displayHumanScore = document.querySelector("#hScore")
+const displayResult = document.querySelector("#result")
+
 let humanScore = 0
 let computerScore = 0;
 
@@ -13,23 +17,23 @@ function getComputerChoice(){
     }
 }
 
-function getHumanChoice(){
-    let input = prompt("Rock, Paper, Scissors, Shoot!")
-    return input
-}
+displayHumanScore.textContent = "Human Score: " + humanScore;
+displayComputerScore.textContent = "Computer Score: " + computerScore;
 
 function humanWin(h, c){
-    console.log("You win! " + h + " beats " + c)
+    displayResult.textContent = "You win! " + h + " beats " + c;
     humanScore++
-    console.log("Your score is now " + humanScore)
-    console.log("The computer's score is " + computerScore)
+    displayHumanScore.textContent = "Human Score: " + humanScore;
+    displayComputerScore.textContent = "Computer Score: " + computerScore;
+    if(humanScore == 5)return winner("You");
 }
 
 function humanLose(h, c){
-    console.log("You Lose! " + c + " beats " + h)
+    displayResult.textContent = "You Lose! " + c + " beats " + h;
     computerScore++
-    console.log("Your score is " + humanScore)
-    console.log("The computer's score is now " + computerScore)
+    displayHumanScore.textContent = "Human Score: " + humanScore;
+    displayComputerScore.textContent = "Computer Score: " + computerScore;
+    if(computerScore == 5)return winner("Computer");
 }
 
 function playRound(humanChoice, computerChoice){
@@ -47,18 +51,23 @@ function playRound(humanChoice, computerChoice){
             else return humanLose(humanChoice, computerChoice)
         }
         if(humanChoice === ("paper")){
-            if(computerChoice === ("rock"))return humanWin()
+            if(computerChoice === ("rock"))return humanWin(humanChoice, computerChoice)
             else return humanLose(humanChoice, computerChoice)
         }
         if(humanChoice === ("scissors")){
-            if(computerChoice === ("paper"))return humanWin()
+            if(computerChoice === ("paper"))return humanWin(humanChoice, computerChoice)
             else return humanLose(humanChoice, computerChoice)
         }
     }
 }
-
-function playGame(){
-    for(i = 0; i < 5; i++){
-        playRound(getHumanChoice(), getComputerChoice())
-    }
+function winner(won){
+    alert(won + " reached 5 wins!")
 }
+const buttons = document.querySelectorAll("button");
+
+buttons.forEach((button) => {
+    button.addEventListener("click", () => {
+      playRound(button.id, getComputerChoice());
+    });
+  });
+
